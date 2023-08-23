@@ -1,11 +1,12 @@
 package game2048;
 
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author Qi Li
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -94,7 +95,7 @@ public class Model extends Observable {
         setChanged();
     }
 
-    /** Tilt the board toward SIDE. Return true iff this changes the board.
+    /** Tilt the board toward SIDE. Return true if this changes the board.
      *
      * 1. If two Tile objects are adjacent in the direction of motion and have
      *    the same value, they are merged into one Tile of twice the original
@@ -113,12 +114,94 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        this.board.setViewingPerspective(side);
+        int size = this.board.size();
+        for (int col = 0; col < size; col++) {
+            // col by col
+            if(moveTheCol(col)) {
+                changed = true;
+            }
+        }
+        this.board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+    /**
+     * Move the col with col num <code>col</code>
+     */
+    private boolean moveTheCol(int col) {
+        int size = this.board.size();
+        int nonNulTileCount = 0;
+        Tile[] tiles = new Tile[size];
+        boolean hasMoved = false;
+        // push all the non-null tiles to an array
+        for (int row = size - 1; row >= 0; row--) {
+            Tile tile = this.board.tile(col, row);
+            if (tile != null) {
+               tiles[nonNulTileCount++] = tile;
+            }
+        }
+        if(nonNulTileCount == 0) {
+            return false;
+        }
+
+        // confirm the row every non-null tile heads to.
+        int[] finalRowIndex = confirmRows(tiles, nonNulTileCount);
+
+        for (int i = 0; i < nonNulTileCount; i++) {
+            boolean hasMerge = this.board.move(col, finalRowIndex[i], tiles[i]);
+            if(tiles[i].next() != tiles[i]) {
+                hasMoved = true;
+            }
+            if(hasMerge) {
+                this.score += tiles[i].next().value();
+            }
+        }
+
+        return hasMoved;
+    }
+
+    /**
+     * Confirm the row that every tile heads to.
+     * <p>For example:
+     * <p>|   2|
+     * <p>|   4|
+     * <p>|   &nbsp;&nbsp;|
+     * <p>|   2|
+     * <p>the target rows are [3,2,1]
+     * <p>Another example:
+     * <p>|   2|
+     * <p>|   2|
+     * <p>|   &nbsp;&nbsp;|
+     * <p>|   4|
+     * <p>the target rows are [3,3,2]
+     *
+     */
+    private int[] confirmRows(Tile[] tiles, int count) {
+        int size = this.board.size();
+        int[] targetRows = new int[size];
+        int index = size - 1;
+        for (int i = 0; i < count; i++) {
+            if(i == 0) {
+                targetRows[i] = index--;
+            } else if (i == 1) {
+                if (tiles[i - 1].value() == tiles[i].value()) {
+                    targetRows[i] = targetRows[i - 1];
+                } else {
+                    targetRows[i] = index--;
+                }
+            } else if (tiles[i - 1].value() == tiles[i].value() && targetRows[i - 2] != targetRows[i - 1]) {
+                targetRows[i] = targetRows[i - 1];
+            } else {
+                targetRows[i] = index--;
+            }
+        }
+        return targetRows;
     }
 
     /** Checks if the game is over and sets the gameOver variable
@@ -137,7 +220,14 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        int size = b.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (b.tile(i, j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -147,7 +237,14 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        int size = b.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(b.tile(i, j) != null && b.tile(i, j).value() == Model.MAX_PIECE) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -158,7 +255,56 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        return Model.emptySpaceExists(b) || Model.hasAdjacentSameValue(b);
+    }
+
+    /**
+     * Return true if there are tiles that are adjacent and having the same value.
+     */
+    private static boolean hasAdjacentSameValue(Board b) {
+        int size = b.size();
+        for (int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                if(checkNeighbours(i, j, b)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Return true if any neighbours of (i,j) having the same value
+     */
+    private static boolean checkNeighbours(int i, int j, Board b) {
+        Tile tile = b.tile(i, j);
+        if(tile == null) {
+            return false;
+        }
+        if(i - 1 >= 0) {
+            Tile leftNeighbour = b.tile(i - 1, j);
+            if(leftNeighbour != null && tile.value() == leftNeighbour.value()) {
+                return true;
+            }
+        }
+        if(j - 1 >= 0) {
+            Tile bottomNeighbour = b.tile(i, j - 1);
+            if(bottomNeighbour != null && tile.value() == bottomNeighbour.value()) {
+                return true;
+            }
+        }
+        if(i + 1 < b.size()) {
+            Tile rightNeighbour = b.tile(i + 1, j);
+            if(rightNeighbour != null && tile.value() == rightNeighbour.value()) {
+                return true;
+            }
+        }
+        if(j + 1 < b.size()) {
+            Tile topNeighbour = b.tile(i, j + 1);
+            if(topNeighbour != null && tile.value() == topNeighbour.value()) {
+                return true;
+            }
+        }
         return false;
     }
 
