@@ -25,4 +25,18 @@ public class AddConstantTest {
         IntListExercises.addConstant(lst, 10);
         assertEquals("11 -> 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18 -> 19", lst.toString());
     }
+
+    @Test
+    public void testAddToEmptyList() {
+        IntList emptyList = IntList.of();
+        IntListExercises.addConstant(emptyList, 1);
+        assertNull(emptyList);
+    }
+
+    @Test
+    public void testAddToSmallList() {
+        IntList list = IntList.of(1);
+        IntListExercises.addConstant(list, 1);
+        assertEquals("2", list.toString());
+    }
 }
