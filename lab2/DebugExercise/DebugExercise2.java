@@ -40,6 +40,9 @@ public class DebugExercise2 {
      * and b = {0, 20, 5}, this function will return {1, 20, 5}.
      * */
     public static int[] arrayMax(int[] a, int[] b) {
+        if (a == null || b == null) {
+            return null;
+        }
         if (a.length != b.length) {
             System.out.println("ERROR! Arrays don't match");
             return null;
