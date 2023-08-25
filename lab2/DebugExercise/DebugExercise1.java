@@ -7,8 +7,7 @@ package DebugExercise;
 public class DebugExercise1 {
     public static int divideThenRound(int top, int bottom) {
         float quotient = 1.0f * top / bottom;
-        int result = Math.round(quotient);
-        return result;
+        return Math.round(quotient);
     }
 
     public static void main(String[] args) {
@@ -26,5 +25,10 @@ public class DebugExercise1 {
         int b3 = 4;
         int result3 = divideThenRound(t3, b3);
         System.out.println("round(" + t3 + "/" + b3 + ")=" + result3);
+
+        int t4 = 1;
+        int b4 = 0;
+        int result4 = divideThenRound(t4, b4);
+        System.out.println("round(" + t4 + "/" + b4 + ")=" + result4);
     }
 }
