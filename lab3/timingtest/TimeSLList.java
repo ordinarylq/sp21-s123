@@ -1,6 +1,8 @@
 package timingtest;
 import edu.princeton.cs.algs4.Stopwatch;
 
+import java.awt.image.LookupOp;
+
 /**
  * Created by hug.
  */
@@ -22,7 +24,37 @@ public class TimeSLList {
     }
 
     public static void timeGetLast() {
-        // TODO: YOUR CODE HERE
+        AList<Integer> instances = new AList<>();
+        AList<Double> times = new AList<>();
+        AList<Integer> opCounts = new AList<>();
+        int size = 1000, opCnt = 10000;
+        while(size <= 128000) {
+            SLList<Integer> list = new SLList<>();
+            multipleAddFirst(size, list);
+
+            Stopwatch stopwatch = new Stopwatch();
+            multipleGetLast(opCnt, list);
+            double elapsedTime = stopwatch.elapsedTime();
+
+            instances.addLast(size);
+            times.addLast(elapsedTime);
+            opCounts.addLast(opCnt);
+
+            size *= 2;
+        }
+        printTimingTable(instances, times, opCounts);
+    }
+
+    private static void multipleAddFirst(int count, SLList<Integer> list) {
+        for (int i = 0; i < count; i++) {
+            list.addFirst(i);
+        }
+    }
+
+    private static void multipleGetLast(int count, SLList<Integer> list) {
+        for (int i = 0; i < count; i++) {
+            list.getLast();
+        }
     }
 
 }
