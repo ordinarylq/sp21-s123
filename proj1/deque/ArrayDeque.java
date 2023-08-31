@@ -102,7 +102,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T get(int index) {
-        return null;
+        int targetIndex = (this.head + index) % this.items.length;
+        return this.items[targetIndex];
     }
 
     @Override
