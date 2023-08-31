@@ -86,4 +86,13 @@ public class ArrayDequeTest {
         }
     }
 
+    @Test
+    public void addAndGetDequeTest() {
+        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
+        Integer expected = 1;
+        arrayDeque.addFirst(1);
+        Integer actual = arrayDeque.get(0);
+        assertEquals("Should have the same value", expected, actual);
+    }
+
 }
