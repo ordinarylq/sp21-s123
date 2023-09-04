@@ -231,4 +231,33 @@ public class LinkedListDequeTest {
         }
     }
 
+    @Test
+    public void testEquals() {
+        LinkedListDeque<Integer> firstDeque = new LinkedListDeque<>();
+        LinkedListDeque<Integer> secondDeque = new LinkedListDeque<>();
+        assertTrue(firstDeque.equals(secondDeque));
+        for (int i = 0; i < 100; i++) {
+            firstDeque.addLast(i);
+            secondDeque.addLast(i);
+        }
+        assertTrue(firstDeque.equals(secondDeque));
+        firstDeque.addLast(100);
+        secondDeque.addLast(99);
+        assertFalse(firstDeque.equals(secondDeque));
+
+        ArrayDeque<String> stringArrayDeque = new ArrayDeque<>();
+        assertFalse(firstDeque.equals(stringArrayDeque));
+    }
+
+    @Test
+    public void testEqualsBetweenArrayDequeAndLinkedListDeque() {
+        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
+        LinkedListDeque<Integer> linkedListDeque = new LinkedListDeque<>();
+        assertTrue(arrayDeque.equals(linkedListDeque));
+        for (int i = 0; i < 100; i++) {
+            arrayDeque.addLast(i);
+            linkedListDeque.addLast(i);
+        }
+        assertTrue(arrayDeque.equals(linkedListDeque));
+    }
 }

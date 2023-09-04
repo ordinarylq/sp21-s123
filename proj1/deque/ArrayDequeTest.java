@@ -149,4 +149,22 @@ public class ArrayDequeTest {
             assertEquals(new Integer(i), arrayDeque2.removeLast());
         }
     }
+
+    @Test
+    public void testEquals() {
+        ArrayDeque<Integer> firstArrayDeque = new ArrayDeque<>();
+        ArrayDeque<Integer> secondArrayDeque = new ArrayDeque<>();
+        assertTrue(firstArrayDeque.equals(secondArrayDeque));
+        for (int i = 0; i < 100; i++) {
+            firstArrayDeque.addLast(i);
+            secondArrayDeque.addLast(i);
+        }
+        assertTrue(firstArrayDeque.equals(secondArrayDeque));
+        firstArrayDeque.addLast(100);
+        secondArrayDeque.addLast(99);
+        assertFalse(firstArrayDeque.equals(secondArrayDeque));
+
+        ArrayDeque<String> stringArrayDeque = new ArrayDeque<>();
+        assertFalse(firstArrayDeque.equals(stringArrayDeque));
+    }
 }
