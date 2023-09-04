@@ -1,5 +1,7 @@
 package deque;
 
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.Stopwatch;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -100,8 +102,10 @@ public class LinkedListDequeTest {
 
         boolean passed1 = false;
         boolean passed2 = false;
-        assertEquals("Should return null when removeFirst is called on an empty Deque,", null, lld1.removeFirst());
-        assertEquals("Should return null when removeLast is called on an empty Deque,", null, lld1.removeLast());
+        assertEquals("Should return null when removeFirst is called on an empty Deque,",
+                null, lld1.removeFirst());
+        assertEquals("Should return null when removeLast is called on an empty Deque,",
+                null, lld1.removeLast());
 
     }
 
@@ -123,4 +127,108 @@ public class LinkedListDequeTest {
         }
 
     }
+
+    @Test
+    public void timeLLDequeConstruction() {
+        LinkedListDeque<Integer> instances = new LinkedListDeque<>();
+        LinkedListDeque<Double> times = new LinkedListDeque<>();
+        LinkedListDeque<Integer> opCounts = new LinkedListDeque<>();
+        int size = 1000;
+        while(size <= 1024000) {
+            instances.addLast(size);
+            opCounts.addLast(size);
+
+            Stopwatch stopwatch = new Stopwatch();
+            addToAList(size);
+            double elapsedTimeInSeconds = stopwatch.elapsedTime();
+
+            times.addLast(elapsedTimeInSeconds);
+            size *= 2;
+        }
+        printTimingTable(instances, times, opCounts);
+    }
+
+    private static void addToAList(int count) {
+        LinkedListDeque<Integer> aList = new LinkedListDeque<>();
+        for (int i = 0; i < count; i++) {
+            aList.addLast(i);
+        }
+    }
+
+    private static void printTimingTable(LinkedListDeque<Integer> Ns, LinkedListDeque<Double> times,
+                                         LinkedListDeque<Integer> opCounts) {
+        System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
+        System.out.printf("------------------------------------------------------------\n");
+        for (int i = 0; i < Ns.size(); i += 1) {
+            int N = Ns.get(i);
+            double time = times.get(i);
+            int opCount = opCounts.get(i);
+            double timePerOp = time / opCount * 1e6;
+            System.out.printf("%12d %12.2f %12d %12.2f\n", N, time, opCount, timePerOp);
+        }
+    }
+    @Test
+    public void testThreeAddThreeRemove() {
+        LinkedListDeque<Integer> linkedListDeque1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> linkedListDeque2 = new LinkedListDeque<>();
+        int count = 3;
+        for (int i = 0; i < count; i++) {
+            linkedListDeque1.addLast(i);
+            linkedListDeque2.addFirst(i);
+        }
+        for (int i = 0; i < count; i++) {
+            assertEquals(new Integer(i), linkedListDeque1.removeFirst());
+            assertEquals(new Integer(i), linkedListDeque2.removeLast());
+        }
+    }
+    @Test
+    public void randomizedTestWithLLDequeAndArrayDeque() {
+        LinkedListDeque<Integer> linkedListDeque = new LinkedListDeque<>();
+        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
+        int count = 10000;
+        for (int i = 0; i < count; i += 1) {
+            int operationNumber = StdRandom.uniform(0, 5);
+            switch(operationNumber) {
+                case 0:
+                    // addLast
+                    int randVal = StdRandom.uniform(0, 100);
+                    linkedListDeque.addLast(randVal);
+                    arrayDeque.addLast(randVal);
+                    break;
+                case 1:
+                    // size
+                    int size = linkedListDeque.size();
+                    int buggyAListSize = arrayDeque.size();
+                    assertEquals(size, buggyAListSize);
+                    break;
+                case 2:
+                    // remove
+                    assertEquals(linkedListDeque.size(), arrayDeque.size());
+                    if (linkedListDeque.size() > 0) {
+                        Integer lastItem = linkedListDeque.removeFirst();
+                        Integer buggyAListLast = arrayDeque.removeFirst();
+                        assertEquals(lastItem, buggyAListLast);
+                    }
+                    break;
+                case 3:
+                    // removeLast
+                    assertEquals(linkedListDeque.size(), arrayDeque.size());
+                    if(linkedListDeque.size() > 0) {
+                        Integer lastItem = linkedListDeque.removeLast();
+                        Integer buggyLastItem = arrayDeque.removeLast();
+                        assertEquals(lastItem, buggyLastItem);
+                    }
+                    break;
+                case 4:
+                    // addFirst
+                    int randValue = StdRandom.uniform(0, 100);
+                    linkedListDeque.addFirst(randValue);
+                    arrayDeque.addFirst(randValue);
+                    break;
+                default:
+                    /*ignore*/
+            }
+        }
+    }
+
 }

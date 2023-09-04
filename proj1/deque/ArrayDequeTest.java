@@ -1,5 +1,6 @@
 package deque;
 
+import edu.princeton.cs.algs4.Stopwatch;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -95,4 +96,57 @@ public class ArrayDequeTest {
         assertEquals("Should have the same value", expected, actual);
     }
 
+    @Test
+    public void timeAListConstruction() {
+        ArrayDeque<Integer> instances = new ArrayDeque<>();
+        ArrayDeque<Double> times = new ArrayDeque<>();
+        ArrayDeque<Integer> opCounts = new ArrayDeque<>();
+        int size = 1000;
+        while(size <= 1024000) {
+            instances.addLast(size);
+            opCounts.addLast(size);
+
+            Stopwatch stopwatch = new Stopwatch();
+            addToAList(size);
+            double elapsedTimeInSeconds = stopwatch.elapsedTime();
+
+            times.addLast(elapsedTimeInSeconds);
+            size *= 2;
+        }
+        printTimingTable(instances, times, opCounts);
+    }
+
+    private static void addToAList(int count) {
+        ArrayDeque<Integer> aList = new ArrayDeque<>();
+        for (int i = 0; i < count; i++) {
+            aList.addLast(i);
+        }
+    }
+
+    private static void printTimingTable(ArrayDeque<Integer> Ns, ArrayDeque<Double> times, ArrayDeque<Integer> opCounts) {
+        System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
+        System.out.printf("------------------------------------------------------------\n");
+        for (int i = 0; i < Ns.size(); i += 1) {
+            int N = Ns.get(i);
+            double time = times.get(i);
+            int opCount = opCounts.get(i);
+            double timePerOp = time / opCount * 1e6;
+            System.out.printf("%12d %12.2f %12d %12.2f\n", N, time, opCount, timePerOp);
+        }
+    }
+
+    @Test
+    public void testThreeAddThreeRemove() {
+        ArrayDeque<Integer> arrayDeque1 = new ArrayDeque<>();
+        ArrayDeque<Integer> arrayDeque2 = new ArrayDeque<>();
+        int count = 3;
+        for (int i = 0; i < count; i++) {
+            arrayDeque1.addLast(i);
+            arrayDeque2.addFirst(i);
+        }
+        for (int i = 0; i < count; i++) {
+            assertEquals(new Integer(i), arrayDeque1.removeFirst());
+            assertEquals(new Integer(i), arrayDeque2.removeLast());
+        }
+    }
 }
