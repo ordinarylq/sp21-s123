@@ -42,7 +42,9 @@ public interface Deque<T> {
      * Check if the deque is empty
      * @return boolean true-empty false-not empty
      */
-    boolean isEmpty();
+    default boolean isEmpty() {
+        return size() == 0;
+    }
 
     /**
      * Get the size of the deque.
