@@ -97,7 +97,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private void downsize() {
         int size = size();
         int finalArrayLength = this.items.length;
-        while(finalArrayLength > INITIAL_SIZE && finalArrayLength > 4 * size) {
+        while (finalArrayLength > INITIAL_SIZE && finalArrayLength > 4 * size) {
             finalArrayLength /= 2;
         }
         if (finalArrayLength != this.items.length) {
