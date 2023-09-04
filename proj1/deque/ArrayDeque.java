@@ -51,12 +51,11 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (Objects.equals(this.head, this.tail)) {
             return null;
         }
-        // TODO: 2023-8-31 Need to consider downsizing
         int length = this.items.length;
         T firstItem = this.items[this.head];
         this.items[this.head] = null;
         this.head = (this.head + 1) % length;
-
+        downsize();
         return firstItem;
     }
 
@@ -65,13 +64,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (Objects.equals(this.head, this.tail)) {
             return null;
         }
-        // TODO: 2023-8-31 Need to consider downsizing
         int length = this.items.length;
         int targetIndex = (this.tail - 1 + length) % length;
         T lastItem = this.items[targetIndex];
         this.items[targetIndex] = null;
         this.tail = targetIndex;
-
+        downsize();
         return lastItem;
     }
 
@@ -97,7 +95,14 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * Downsize the array.
      */
     private void downsize() {
-        
+        int size = size();
+        int finalArrayLength = this.items.length;
+        while(finalArrayLength > INITIAL_SIZE && finalArrayLength > 4 * size) {
+            finalArrayLength /= 2;
+        }
+        if (finalArrayLength != this.items.length) {
+            resize(finalArrayLength);
+        }
     }
 
     @Override
