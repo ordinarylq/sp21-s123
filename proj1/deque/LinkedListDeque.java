@@ -9,16 +9,16 @@ import java.util.Iterator;
  * @Version: V1.0
  * @Description:
  */
-public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     /**
      * Internal node for a doubly linked list.
      */
     private static class Node<T> {
-        public T item;
-        public Node<T> prev;
-        public Node<T> next;
+        private T item;
+        private Node<T> prev;
+        private Node<T> next;
 
-        public Node(T item, Node<T> prev, Node<T> next) {
+        Node(T item, Node<T> prev, Node<T> next) {
             this.item = item;
             this.prev = prev;
             this.next = next;
@@ -106,15 +106,15 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
     /**
      * Recursively get the targetIndex-th item of the deque.
      * @param node first node of the deque
-	 * @param currentIndex current index
-	 * @param targetIndex target index
+     * @param currentIndex current index
+     * @param targetIndex target index
      * @return T value of i-th item of the deque
      */
     private T getRecursiveInternal(Node<T> node, int currentIndex, int targetIndex) {
-        if(currentIndex == targetIndex) {
+        if (currentIndex == targetIndex) {
             return node.item;
         }
-        if(node.next == this.sentinel) {
+        if (node.next == this.sentinel) {
             return null;
         }
         return getRecursiveInternal(node.next, currentIndex + 1, targetIndex);
@@ -137,7 +137,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         for (int i = 0; i < this.size; i++) {
             current = current.next;
             System.out.print(current.item);
-            if(i < this.size - 1) {
+            if (i < this.size - 1) {
                 System.out.print(" ");
             }
         }

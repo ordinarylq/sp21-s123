@@ -48,7 +48,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T removeFirst() {
-        if (Objects.equals(this.head,this.tail)) {
+        if (Objects.equals(this.head, this.tail)) {
             return null;
         }
         // TODO: 2023-8-31 Need to consider downsizing
@@ -62,7 +62,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T removeLast() {
-        if (Objects.equals(this.head,this.tail)) {
+        if (Objects.equals(this.head, this.tail)) {
             return null;
         }
         // TODO: 2023-8-31 Need to consider downsizing
