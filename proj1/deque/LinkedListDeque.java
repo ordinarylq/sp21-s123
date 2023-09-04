@@ -144,13 +144,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         System.out.println();
     }
 
-
-    @Override
-    public int hashCode() {
-        // TODO: 2023-8-31
-        return super.hashCode();
-    }
-
     /**
      * Check if the parameter <code>o</code> is equals to the deque.
      * <p>Object <code>o</code> is considered equal only if it is a Deque and if

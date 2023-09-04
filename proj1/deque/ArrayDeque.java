@@ -18,9 +18,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     private Integer tail;
 
-    public static final Integer INITIAL_SIZE = 8;
+    private static final Integer INITIAL_SIZE = 8;
 
-    public static final Integer RESIZE_FACTOR = 2;
+    private static final Integer RESIZE_FACTOR = 2;
 
     public ArrayDeque() {
         this.items = (T[]) new Object[INITIAL_SIZE];
@@ -129,11 +129,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return null;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 
     @Override
