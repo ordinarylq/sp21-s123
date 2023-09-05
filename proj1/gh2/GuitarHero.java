@@ -32,7 +32,8 @@ public class GuitarHero {
     private static void createGuitarStrings() {
         int length = KEYBOARD.length();
         for (int i = 0; i < length; i++) {
-            double frequency = CONCERT_A * Math.pow(2, (i - FREQUENCY_PARAMETER_A) / FREQUENCY_PARAMETER_B);
+            double frequency = CONCERT_A *
+                    Math.pow(2, (i - FREQUENCY_PARAMETER_A) / FREQUENCY_PARAMETER_B);
             guitarStrings.addLast(new GuitarString(frequency));
         }
     }

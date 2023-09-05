@@ -127,7 +127,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        // TODO: 2023-8-31
         return null;
     }
 
