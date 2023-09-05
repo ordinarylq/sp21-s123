@@ -1,5 +1,6 @@
 package gh2;
 
+import deque.ArrayDeque;
 import deque.Deque;
 import deque.LinkedListDeque;
 
@@ -17,7 +18,7 @@ public class GuitarString {
     /* Create a guitar string of the given frequency.  */
     public GuitarString(double frequency) {
         int capacity = (int) Math.round(SR / frequency);
-        this.buffer = new LinkedListDeque<>();
+        this.buffer = new ArrayDeque<>();
         for (int i = 0; i < capacity; i++) {
             this.buffer.addFirst(0.0);
         }
