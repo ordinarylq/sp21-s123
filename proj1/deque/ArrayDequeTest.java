@@ -45,8 +45,8 @@ public class ArrayDequeTest {
                 arrayDeque.isEmpty());
 
         arrayDeque.removeFirst();
-        assertTrue("ArrayDeque should be empty after removal the only item."
-                , arrayDeque.isEmpty());
+        assertTrue("ArrayDeque should be empty after removal the only item.",
+                arrayDeque.isEmpty());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ArrayDequeTest {
             assertEquals("Should have the same value.", i, (double) arrayDeque.removeFirst(), 0.0);
         }
 
-        for (int i = 999999; i > 500000 ; i--) {
+        for (int i = 999999; i > 500000; i--) {
             assertEquals("Should have the same value.", i, (double) arrayDeque.removeLast(), 0.0);
         }
     }
@@ -102,7 +102,7 @@ public class ArrayDequeTest {
         ArrayDeque<Double> times = new ArrayDeque<>();
         ArrayDeque<Integer> opCounts = new ArrayDeque<>();
         int size = 1000;
-        while(size <= 1024000) {
+        while (size <= 1024000) {
             instances.addLast(size);
             opCounts.addLast(size);
 
@@ -123,7 +123,8 @@ public class ArrayDequeTest {
         }
     }
 
-    private static void printTimingTable(ArrayDeque<Integer> Ns, ArrayDeque<Double> times, ArrayDeque<Integer> opCounts) {
+    private static void printTimingTable(ArrayDeque<Integer> Ns, ArrayDeque<Double> times,
+                                         ArrayDeque<Integer> opCounts) {
         System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
         System.out.printf("------------------------------------------------------------\n");
         for (int i = 0; i < Ns.size(); i += 1) {
