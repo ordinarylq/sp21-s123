@@ -3,6 +3,8 @@ package deque;
 import edu.princeton.cs.algs4.Stopwatch;
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -167,5 +169,23 @@ public class ArrayDequeTest {
 
         ArrayDeque<String> stringArrayDeque = new ArrayDeque<>();
         assertFalse(firstArrayDeque.equals(stringArrayDeque));
+    }
+
+    @Test
+    public void testIterator() {
+        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
+        Iterator<Integer> iterator = arrayDeque.iterator();
+        assertFalse(iterator.hasNext());
+        for (int i = 0; i < 10; i++) {
+            arrayDeque.addLast(i);
+        }
+        assertTrue(iterator.hasNext());
+        for (int i = 0; i < 10; i++) {
+            assertEquals(new Integer(i), iterator.next());
+        }
+        assertFalse(iterator.hasNext());
+
+        Iterator<Integer> iterator2 = arrayDeque.iterator();
+        assertTrue(iterator2.hasNext());
     }
 }

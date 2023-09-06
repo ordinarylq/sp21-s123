@@ -3,6 +3,9 @@ package deque;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.Stopwatch;
 import org.junit.Test;
+
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 
@@ -259,5 +262,22 @@ public class LinkedListDequeTest {
             linkedListDeque.addLast(i);
         }
         assertTrue(arrayDeque.equals(linkedListDeque));
+    }
+
+    @Test
+    public void testIterator() {
+        LinkedListDeque<Integer> linkedListDeque = new LinkedListDeque<>();
+        for (int i = 0; i < 10; i++) {
+            linkedListDeque.addLast(i);
+        }
+        Iterator<Integer> iterator = linkedListDeque.iterator();
+        assertTrue(iterator.hasNext());
+        for (int i = 0; i < 10; i++) {
+            assertEquals(new Integer(i), iterator.next());
+        }
+        assertFalse(iterator.hasNext());
+
+        Iterator<Integer> iterator2 = linkedListDeque.iterator();
+        assertTrue(iterator2.hasNext());
     }
 }
