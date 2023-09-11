@@ -3,14 +3,22 @@
  */
 public class Collatz {
 
-    /** Buggy implementation of nextNumber! */
+    /**
+     * Return the next number of positive integer number n
+     * with Collatz sequence.
+     * <p>
+     * Collatz sequence:
+     * <p>If n is even, the next number is n/2.
+     * <p>If n is odd, the next number is 3*n+1.
+     * <p>If n is 1, the sequence is over.
+     */
     public static int nextNumber(int n) {
-        if (n  == 128) {
-            return 1;
-        } else if (n == 5) {
+        if(n % 2 == 0) {
+            return n / 2;
+        } else if(n > 1) {
             return 3 * n + 1;
         } else {
-            return n * 2;
+            return n;
         }
     }
 
